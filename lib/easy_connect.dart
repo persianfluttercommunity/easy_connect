@@ -2,5 +2,5 @@ library easy_connect;
 
 export 'src/api.dart';
 
-/// A RestApi Connector
+/// A Rest Api Connector
 class EasyConnect {}
