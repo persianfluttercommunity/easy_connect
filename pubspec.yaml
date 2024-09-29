@@ -1,15 +1,19 @@
 name: easy_connect
-description: A Flutter package fro connect easy.
-version: 0.0.1
+description: A Flutter package fro connect with api requests.
+version: 1.0.0
 homepage: https://github.com/persianfluttercommunity/easy_connect
 
 environment:
-  sdk: '>=3.1.4 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  dio: ^5.7.0
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_test:
@@ -20,7 +24,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
-flutter:
+# flutter:
 
   # To add assets to your package, add an assets section, like this:
   # assets:
