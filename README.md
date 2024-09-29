@@ -1,6 +1,6 @@
-# log_print
+# easy_connect
 
-A Flutter package for all platforms which manages console printing for debug and release and printing colorful in editor console
+A Flutter package for making api requests easy to use and simple including bearer token authentication.
 
 ## Usage
 
@@ -21,19 +21,12 @@ To use this package :
 
 ```dart
 void main() {
-  setLogPrintConfig(LogPrintConfig(colorful: true, debugMode: true));
-
-  LogPrint("This is Success Message", type: LogPrintType.success);
-  LogPrint("This is Error Message", type: LogPrintType.error);
-  LogPrint("This is Warning Message", type: LogPrintType.warning);
-  LogPrint("This is Info Message", type: LogPrintType.info);
-  LogPrint("This is Custom Message",
-      type: LogPrintType.custom,
-      title: "Custom Title",
-      titleBackgroundColor: Colors.purple,
-      messageColor: Colors.cyanAccent);
-
-  runApp(const MyApp());
+  // set easy_connect config
+  setEasyConnectConfig(EasyConnectConfig(
+    url: "https://google.com",
+    timeout: const Duration(seconds: 10),
+  ));
+  runApp(const MainApp());
 }
 
 ```
