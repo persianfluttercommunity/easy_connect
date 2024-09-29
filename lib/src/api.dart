@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:easy_connect/easy_connect.dart';
-import 'package:easy_connect/src/api_request.dart';
-import 'package:easy_connect/src/api_response.dart';
 
 class Api {
   late Map<String, String> headers;
@@ -11,7 +9,7 @@ class Api {
   Map<String, dynamic>? inputs;
   String filesTitle = 'image';
 
-  Dio dio = Dio(BaseOptions(baseUrl: easyConnectConfig.url));
+  final Dio _dio = Dio(BaseOptions(baseUrl: easyConnectConfig.url));
 
   Future<void> fillHeaders() async {
     try {
@@ -33,20 +31,22 @@ class Api {
 
   Future<ApiResponse> connect({String urlParam = "", bool body = false}) async {
     await fillHeaders();
-    dio.options.headers = headers;
-    dio.options.connectTimeout = const Duration(seconds: 10);
-    if (urlParam.isNotEmpty) urlParam = "/$urlParam";
+    _dio.options.headers = headers;
+    _dio.options.connectTimeout = const Duration(seconds: 10);
+    if (urlParam.isNotEmpty) {
+      urlParam = urlParam.startsWith("/") ? urlParam : "/$urlParam";
+    }
     Response? response;
     try {
       switch (request.type) {
         case RequestType.post:
-          response = await dio.post(
+          response = await _dio.post(
             request.route + urlParam,
             data: inputs,
           );
           break;
         case RequestType.get:
-          response = await dio.get(
+          response = await _dio.get(
             request.route + urlParam,
             data: inputs,
           );
@@ -67,10 +67,9 @@ class Api {
         easyConnectConfig.logout!();
       }
     } else if (response.statusCode == 404) {
-      // Get.Get.rawSnackbar(message: "صفحه مورد نظر یافت نشد");
+      // Not found
     } else if (response.statusCode == 503) {
-      // Get.snackbar("سرور در حال بروز رسانی است",
-      //     "لطفا پس از دقایقی دوباره امتحان کنید ...");
+      // Server Upgrading
     } else if (response.statusCode == 422 ||
         response.statusCode == 500 ||
         response.statusCode == 403) {
@@ -90,9 +89,8 @@ class Api {
       //   }
       // }
       // if (errorString.isEmpty) {
-      //   errorString = "خطای ${response.statusCode}";
+      //   errorString = "Error ${response.statusCode}";
       // }
-      // Get.snackbar("خطا", errorString);
     }
     return ApiResponse(response);
   }
