@@ -59,44 +59,57 @@ class Api {
       }
     } catch (e) {
       if ((e as DioException).type == DioExceptionType.connectionTimeout) {
+        if (easyConnectConfig.errorHandler != null) {
+          easyConnectConfig.errorHandler!(408);
+        }
       } else {
         response = (e).response;
       }
     }
 
-    if (response != null &&
-        response.statusCode! >= 200 &&
-        response.statusCode! < 300) {
-    } else if (response!.statusCode == 401) {
-      if (easyConnectConfig.logout != null) {
-        easyConnectConfig.logout!();
+    if (response != null) {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+      } else if (response.statusCode == 401) {
+        if (easyConnectConfig.logout != null) {
+          easyConnectConfig.logout!();
+        }
+      } else if (response.statusCode == 404) {
+        if (easyConnectConfig.errorHandler != null) {
+          easyConnectConfig.errorHandler!(404);
+        }
+        // Not found
+      } else if (response.statusCode == 503) {
+        if (easyConnectConfig.errorHandler != null) {
+          easyConnectConfig.errorHandler!(500);
+        }
+        // Server Upgrading
+      } else if (response.statusCode == 422 ||
+          response.statusCode == 500 ||
+          response.statusCode == 403) {
+        if (easyConnectConfig.errorHandler != null) {
+          easyConnectConfig.errorHandler!(response.statusCode!);
+        }
+        // String errorString = "";
+        // var errorsJson = json.decode(res)['errors'];
+        // if (errorsJson is Map) {
+        //   errorsJson.forEach((key, value) {
+        //     for (var element in (value as List)) {
+        //       errorString += "${element as String}\n";
+        //     }
+        //   });
+        // } else if (errorsJson is List) {
+        //   for (var element in errorsJson) {
+        //     for (var value in (element as List)) {
+        //       errorString += "${value as String}\n";
+        //     }
+        //   }
+        // }
+        // if (errorString.isEmpty) {
+        //   errorString = "Error ${response.statusCode}";
+        // }
       }
-    } else if (response.statusCode == 404) {
-      // Not found
-    } else if (response.statusCode == 503) {
-      // Server Upgrading
-    } else if (response.statusCode == 422 ||
-        response.statusCode == 500 ||
-        response.statusCode == 403) {
-      // String errorString = "";
-      // var errorsJson = json.decode(res)['errors'];
-      // if (errorsJson is Map) {
-      //   errorsJson.forEach((key, value) {
-      //     for (var element in (value as List)) {
-      //       errorString += "${element as String}\n";
-      //     }
-      //   });
-      // } else if (errorsJson is List) {
-      //   for (var element in errorsJson) {
-      //     for (var value in (element as List)) {
-      //       errorString += "${value as String}\n";
-      //     }
-      //   }
-      // }
-      // if (errorString.isEmpty) {
-      //   errorString = "Error ${response.statusCode}";
-      // }
     }
+
     return ApiResponse(response);
   }
 }
