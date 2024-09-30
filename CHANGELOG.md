@@ -4,5 +4,5 @@
 ## 1.0.1
 * Update readme and example
 
-## 1.0.2
+## 1.0.3
 * Fix timeout bug
