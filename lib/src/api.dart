@@ -9,7 +9,10 @@ class Api {
   Map<String, dynamic>? inputs;
   String filesTitle = 'image';
 
-  final Dio _dio = Dio(BaseOptions(baseUrl: easyConnectConfig.url));
+  final Dio _dio = Dio(BaseOptions(
+    baseUrl: easyConnectConfig.url,
+    connectTimeout: easyConnectConfig.timeout,
+  ));
 
   Future<void> fillHeaders() async {
     try {
@@ -61,8 +64,10 @@ class Api {
       }
     }
 
-    if (response!.statusCode! >= 200 && response.statusCode! < 300) {
-    } else if (response.statusCode == 401) {
+    if (response != null &&
+        response.statusCode! >= 200 &&
+        response.statusCode! < 300) {
+    } else if (response!.statusCode == 401) {
       if (easyConnectConfig.logout != null) {
         easyConnectConfig.logout!();
       }

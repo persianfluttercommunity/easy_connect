@@ -1,6 +1,6 @@
 name: easy_connect
 description: A Flutter package for making api requests easy to use and simple including bearer token authentication.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/persianfluttercommunity/easy_connect
 
 environment:
