@@ -9,23 +9,22 @@ class Api {
   Map<String, dynamic>? inputs;
   String filesTitle = 'image';
 
-  final Dio _dio = Dio(BaseOptions(
-    baseUrl: easyConnectConfig.url,
-    connectTimeout: easyConnectConfig.timeout,
-  ));
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: easyConnectConfig.url,
+      connectTimeout: easyConnectConfig.timeout,
+    ),
+  );
 
   Future<void> fillHeaders() async {
     try {
       headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin': '*',
       };
 
       if (easyConnectConfig.token != null) {
-        headers.addAll({
-          'Authorization': 'Bearer ${easyConnectConfig.token}',
-        });
+        headers.addAll({'Authorization': 'Bearer ${easyConnectConfig.token}'});
       }
     } catch (e) {
       headers = {};
@@ -43,16 +42,10 @@ class Api {
     try {
       switch (request.type) {
         case RequestType.post:
-          response = await _dio.post(
-            request.route + urlParam,
-            data: inputs,
-          );
+          response = await _dio.post(request.route + urlParam, data: inputs);
           break;
         case RequestType.get:
-          response = await _dio.get(
-            request.route + urlParam,
-            data: inputs,
-          );
+          response = await _dio.get(request.route + urlParam, data: inputs);
           break;
         default:
           break;

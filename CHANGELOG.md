@@ -6,3 +6,6 @@
 
 ## 1.0.3
 * Fix timeout bug
+
+## 1.0.4
+* remove cors in header
